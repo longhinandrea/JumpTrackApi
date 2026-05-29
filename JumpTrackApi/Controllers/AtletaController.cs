@@ -4,7 +4,9 @@ using MySql.Data.MySqlClient;
 
 namespace JumpTrackApi.Controllers
 {
-    public class AtletaController : Controller
+    [ApiController]
+    [Route("api/[controller]")]
+    public class AtletaController : ControllerBase
     {
         private readonly IConfiguration _config;
 
@@ -34,5 +36,36 @@ namespace JumpTrackApi.Controllers
             return Ok(new { Success = true });
         }
 
+        [HttpGet]
+        public async Task<IActionResult> GetAtleti()
+        {
+            var connStr = _config.GetConnectionString("DefaultConnection");
+            using var conn = new MySqlConnection(connStr);
+            await conn.OpenAsync();
+
+            var cmd = conn.CreateCommand();
+            cmd.CommandText = "SELECT Id, Cognome, Nome, Eta, SocietaSportiva, Telefono, Immagine FROM atleti";
+            var reader = await cmd.ExecuteReaderAsync();
+
+            var lista = new List<Atleta>();
+            while (await reader.ReadAsync())
+            {
+                lista.Add(new Atleta
+                {
+                    Id = reader.GetInt32(0),
+                    Cognome = reader.GetString(1),
+                    Nome = reader.GetString(2),
+                    Eta = reader.GetInt32(3),
+                    SocietaSportiva = reader.GetString(4),
+                    Telefono = reader.GetString(5),
+                    Immagine = reader.GetString(6)
+                });
+            }
+            return Ok(lista);
+        }
+
+
+
     }
 }
+
