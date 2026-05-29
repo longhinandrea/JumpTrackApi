@@ -3,6 +3,14 @@
   "WorkspaceRootPath": "C:\\Users\\User\\Documents\\GitHub\\JumpTrackApi\\",
   "Documents": [
     {
+      "AbsoluteMoniker": "D:0:0:{CD84402B-3A02-A589-A004-6166ECBBB565}|JumpTrackApi\\JumpTrackApi.csproj|c:\\users\\user\\documents\\github\\jumptrackapi\\jumptrackapi\\controllers\\cavallocontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{CD84402B-3A02-A589-A004-6166ECBBB565}|JumpTrackApi\\JumpTrackApi.csproj|solutionrelative:jumptrackapi\\controllers\\cavallocontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{CD84402B-3A02-A589-A004-6166ECBBB565}|JumpTrackApi\\JumpTrackApi.csproj|c:\\users\\user\\documents\\github\\jumptrackapi\\jumptrackapi\\models\\cavallo.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{CD84402B-3A02-A589-A004-6166ECBBB565}|JumpTrackApi\\JumpTrackApi.csproj|solutionrelative:jumptrackapi\\models\\cavallo.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
       "AbsoluteMoniker": "D:0:0:{CD84402B-3A02-A589-A004-6166ECBBB565}|JumpTrackApi\\JumpTrackApi.csproj|c:\\users\\user\\documents\\github\\jumptrackapi\\jumptrackapi\\controllers\\atletacontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
       "RelativeMoniker": "D:0:0:{CD84402B-3A02-A589-A004-6166ECBBB565}|JumpTrackApi\\JumpTrackApi.csproj|solutionrelative:jumptrackapi\\controllers\\atletacontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     },
@@ -22,7 +30,7 @@
       "DocumentGroups": [
         {
           "DockedWidth": 200,
-          "SelectedChildIndex": 13,
+          "SelectedChildIndex": 12,
           "Children": [
             {
               "$type": "Bookmark",
@@ -74,7 +82,33 @@
             },
             {
               "$type": "Document",
+              "DocumentIndex": 0,
+              "Title": "CavalloController.cs",
+              "DocumentMoniker": "C:\\Users\\User\\Documents\\GitHub\\JumpTrackApi\\JumpTrackApi\\Controllers\\CavalloController.cs",
+              "RelativeDocumentMoniker": "JumpTrackApi\\Controllers\\CavalloController.cs",
+              "ToolTip": "C:\\Users\\User\\Documents\\GitHub\\JumpTrackApi\\JumpTrackApi\\Controllers\\CavalloController.cs",
+              "RelativeToolTip": "JumpTrackApi\\Controllers\\CavalloController.cs",
+              "ViewState": "AgIAABcAAAAAAAAAAAAAACQAAACFAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2026-05-29T23:49:50.069Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
               "DocumentIndex": 1,
+              "Title": "Cavallo.cs",
+              "DocumentMoniker": "C:\\Users\\User\\Documents\\GitHub\\JumpTrackApi\\JumpTrackApi\\Models\\Cavallo.cs",
+              "RelativeDocumentMoniker": "JumpTrackApi\\Models\\Cavallo.cs",
+              "ToolTip": "C:\\Users\\User\\Documents\\GitHub\\JumpTrackApi\\JumpTrackApi\\Models\\Cavallo.cs",
+              "RelativeToolTip": "JumpTrackApi\\Models\\Cavallo.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAoAAAABAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2026-05-29T23:48:34.652Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 3,
               "Title": "appsettings.json",
               "DocumentMoniker": "C:\\Users\\User\\Documents\\GitHub\\JumpTrackApi\\JumpTrackApi\\appsettings.json",
               "RelativeDocumentMoniker": "JumpTrackApi\\appsettings.json",
@@ -86,20 +120,20 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 0,
+              "DocumentIndex": 2,
               "Title": "AtletaController.cs",
               "DocumentMoniker": "C:\\Users\\User\\Documents\\GitHub\\JumpTrackApi\\JumpTrackApi\\Controllers\\AtletaController.cs",
               "RelativeDocumentMoniker": "JumpTrackApi\\Controllers\\AtletaController.cs",
               "ToolTip": "C:\\Users\\User\\Documents\\GitHub\\JumpTrackApi\\JumpTrackApi\\Controllers\\AtletaController.cs",
               "RelativeToolTip": "JumpTrackApi\\Controllers\\AtletaController.cs",
-              "ViewState": "AgIAAD4AAAAAAAAAAAAcwFwAAAAyAAAAAAAAAA==",
+              "ViewState": "AgIAADsAAAAAAAAAAAAcwF0AAAAeAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
               "WhenOpened": "2026-05-28T22:04:43.581Z",
               "EditorCaption": ""
             },
             {
               "$type": "Document",
-              "DocumentIndex": 2,
+              "DocumentIndex": 4,
               "Title": "Atleta.cs",
               "DocumentMoniker": "C:\\Users\\User\\Documents\\GitHub\\JumpTrackApi\\JumpTrackApi\\Models\\Atleta.cs",
               "RelativeDocumentMoniker": "JumpTrackApi\\Models\\Atleta.cs",
