@@ -41,32 +41,6 @@ namespace JumpTrackApi.Controllers
             return Ok(utenti);
         }
 
-        // GET: api/utente/{id}
-        [HttpGet("{id}")]
-        public IActionResult Get(int id)
-        {
-            string connStr = _configuration.GetConnectionString("DefaultConnection");
-            using var conn = new MySqlConnection(connStr);
-            conn.Open();
-            using var cmd = new MySqlCommand("SELECT * FROM Utente WHERE Id = @Id", conn);
-            cmd.Parameters.AddWithValue("@Id", id);
-            using var reader = cmd.ExecuteReader();
-            if (reader.Read())
-            {
-                var utente = new Utente
-                {
-                    Id = reader.GetInt32("Id"),
-                    Email = reader.GetString("Email"),
-                    PasswordHash = reader.GetString("PasswordHash"),
-                    Nome = reader.GetString("Nome"),
-                    SocietaId = reader.GetInt32("SocietaId"),
-                    IsAdmin = reader.GetBoolean("IsAdmin"),
-                    IsActive = reader.GetBoolean("IsActive")
-                };
-                return Ok(utente);
-            }
-            return NotFound();
-        }
 
         [HttpGet("{id}")]
         public IActionResult Get(int id)
