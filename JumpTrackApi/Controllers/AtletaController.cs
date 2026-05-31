@@ -23,14 +23,15 @@ namespace JumpTrackApi.Controllers
             await conn.OpenAsync();
 
             var cmd = conn.CreateCommand();
-            cmd.CommandText = @"INSERT INTO atleti (Cognome, Nome, Eta, SocietaSportiva, Telefono, Immagine)
-                                VALUES (@Cognome, @Nome, @Eta, @SocietaSportiva, @Telefono, @Immagine)";
+            cmd.CommandText = @"INSERT INTO atleti (Cognome, Nome, Eta, SocietaSportiva, Telefono, Immagine, SocietaId)
+                                VALUES (@Cognome, @Nome, @Eta, @SocietaSportiva, @Telefono, @Immagine, @SocietaId)";
             cmd.Parameters.AddWithValue("@Cognome", atleta.Cognome ?? "");
             cmd.Parameters.AddWithValue("@Nome", atleta.Nome ?? "");
             cmd.Parameters.AddWithValue("@Eta", atleta.Eta);
             cmd.Parameters.AddWithValue("@SocietaSportiva", atleta.SocietaSportiva ?? "");
             cmd.Parameters.AddWithValue("@Telefono", atleta.Telefono ?? "");
             cmd.Parameters.AddWithValue("@Immagine", atleta.Immagine ?? "");
+            cmd.Parameters.AddWithValue("@SocietaId", atleta.SocietaId);
 
             await cmd.ExecuteNonQueryAsync();
             return Ok(new { Success = true });
@@ -73,6 +74,45 @@ namespace JumpTrackApi.Controllers
             return Ok(lista);
         }
 
+        [HttpGet("{id}")]
+        public async Task<IActionResult> GetAtletaById(int id, [FromQuery] int? societaId = null)
+        {
+            var connStr = _config.GetConnectionString("DefaultConnection");
+            using var conn = new MySqlConnection(connStr);
+            await conn.OpenAsync();
+
+            var cmd = conn.CreateCommand();
+            if (societaId.HasValue)
+            {
+                cmd.CommandText = "SELECT Id, Cognome, Nome, Eta, SocietaSportiva, Telefono, Immagine, SocietaId FROM atleti WHERE Id = @Id AND SocietaId = @SocietaId";
+                cmd.Parameters.AddWithValue("@Id", id);
+                cmd.Parameters.AddWithValue("@SocietaId", societaId.Value);
+            }
+            else
+            {
+                cmd.CommandText = "SELECT Id, Cognome, Nome, Eta, SocietaSportiva, Telefono, Immagine, SocietaId FROM atleti WHERE Id = @Id";
+                cmd.Parameters.AddWithValue("@Id", id);
+            }
+
+            var reader = await cmd.ExecuteReaderAsync();
+            if (await reader.ReadAsync())
+            {
+                var atleta = new Atleta
+                {
+                    Id = reader.GetInt32(0),
+                    Cognome = reader.GetString(1),
+                    Nome = reader.GetString(2),
+                    Eta = reader.GetInt32(3),
+                    SocietaSportiva = reader.GetString(4),
+                    Telefono = reader.GetString(5),
+                    Immagine = reader.GetString(6),
+                    SocietaId = reader.GetInt32(7)
+                };
+                return Ok(atleta);
+            }
+            return NotFound();
+        }
+
         [HttpPut("{id}")]
         public async Task<IActionResult> ModificaAtleta(int id, [FromBody] Atleta atleta)
         {
@@ -87,7 +127,8 @@ namespace JumpTrackApi.Controllers
                             Eta = @Eta,
                             SocietaSportiva = @SocietaSportiva,
                             Telefono = @Telefono,
-                            Immagine = @Immagine
+                            Immagine = @Immagine,
+                            SocietaId = @SocietaId
                         WHERE Id = @Id";
             cmd.Parameters.AddWithValue("@Cognome", atleta.Cognome ?? "");
             cmd.Parameters.AddWithValue("@Nome", atleta.Nome ?? "");
@@ -95,6 +136,7 @@ namespace JumpTrackApi.Controllers
             cmd.Parameters.AddWithValue("@SocietaSportiva", atleta.SocietaSportiva ?? "");
             cmd.Parameters.AddWithValue("@Telefono", atleta.Telefono ?? "");
             cmd.Parameters.AddWithValue("@Immagine", atleta.Immagine ?? "");
+            cmd.Parameters.AddWithValue("@SocietaId", atleta.SocietaId);
             cmd.Parameters.AddWithValue("@Id", id);
 
             var rows = await cmd.ExecuteNonQueryAsync();

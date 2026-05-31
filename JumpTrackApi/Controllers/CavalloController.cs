@@ -50,16 +50,51 @@ namespace JumpTrackApi.Controllers
             return Ok(cavalli);
         }
 
+        [HttpGet("{id}")]
+        public IActionResult GetCavalloById(int id, [FromQuery] int? societaId = null)
+        {
+            using var conn = new MySqlConnection(_configuration.GetConnectionString("DefaultConnection"));
+            conn.Open();
+            MySqlCommand cmd;
+            if (societaId.HasValue)
+            {
+                cmd = new MySqlCommand("SELECT * FROM Cavalli WHERE Id = @Id AND SocietaId = @SocietaId", conn);
+                cmd.Parameters.AddWithValue("@Id", id);
+                cmd.Parameters.AddWithValue("@SocietaId", societaId.Value);
+            }
+            else
+            {
+                cmd = new MySqlCommand("SELECT * FROM Cavalli WHERE Id = @Id", conn);
+                cmd.Parameters.AddWithValue("@Id", id);
+            }
+            using var reader = cmd.ExecuteReader();
+            if (reader.Read())
+            {
+                var cavallo = new Cavallo
+                {
+                    Id = reader.GetInt32(reader.GetOrdinal("Id")),
+                    Nome = reader.GetString(reader.GetOrdinal("Nome")),
+                    Eta = reader.GetInt32(reader.GetOrdinal("Eta")),
+                    Scuderia = reader.GetString(reader.GetOrdinal("Scuderia")),
+                    Immagine = reader.IsDBNull(reader.GetOrdinal("Immagine")) ? null : reader.GetString(reader.GetOrdinal("Immagine")),
+                    SocietaId = reader.GetInt32(reader.GetOrdinal("SocietaId"))
+                };
+                return Ok(cavallo);
+            }
+            return NotFound();
+        }
+
         [HttpPost]
         public IActionResult InserisciCavallo([FromBody] Cavallo cavallo)
         {
             using var conn = new MySqlConnection(_configuration.GetConnectionString("DefaultConnection"));
             conn.Open();
-            var cmd = new MySqlCommand("INSERT INTO Cavalli (Nome, Eta, Scuderia, Immagine) VALUES (@Nome, @Eta, @Scuderia, @Immagine)", conn);
+            var cmd = new MySqlCommand("INSERT INTO Cavalli (Nome, Eta, Scuderia, Immagine, SocietaId) VALUES (@Nome, @Eta, @Scuderia, @Immagine, @SocietaId)", conn);
             cmd.Parameters.AddWithValue("@Nome", cavallo.Nome);
             cmd.Parameters.AddWithValue("@Eta", cavallo.Eta);
             cmd.Parameters.AddWithValue("@Scuderia", cavallo.Scuderia);
             cmd.Parameters.AddWithValue("@Immagine", cavallo.Immagine ?? (object)DBNull.Value);
+            cmd.Parameters.AddWithValue("@SocietaId", cavallo.SocietaId);
             cmd.ExecuteNonQuery();
             return Ok(new { success = true });
         }
@@ -69,11 +104,12 @@ namespace JumpTrackApi.Controllers
         {
             using var conn = new MySqlConnection(_configuration.GetConnectionString("DefaultConnection"));
             conn.Open();
-            var cmd = new MySqlCommand("UPDATE Cavalli SET Nome=@Nome, Eta=@Eta, Scuderia=@Scuderia, Immagine=@Immagine WHERE Id=@Id", conn);
+            var cmd = new MySqlCommand("UPDATE Cavalli SET Nome=@Nome, Eta=@Eta, Scuderia=@Scuderia, Immagine=@Immagine, SocietaId=@SocietaId WHERE Id=@Id", conn);
             cmd.Parameters.AddWithValue("@Nome", cavallo.Nome);
             cmd.Parameters.AddWithValue("@Eta", cavallo.Eta);
             cmd.Parameters.AddWithValue("@Scuderia", cavallo.Scuderia);
             cmd.Parameters.AddWithValue("@Immagine", cavallo.Immagine ?? (object)DBNull.Value);
+            cmd.Parameters.AddWithValue("@SocietaId", cavallo.SocietaId);
             cmd.Parameters.AddWithValue("@Id", id);
             var rows = cmd.ExecuteNonQuery();
             if (rows == 0) return NotFound();
