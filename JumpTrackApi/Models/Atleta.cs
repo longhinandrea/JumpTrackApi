@@ -9,5 +9,6 @@ namespace JumpTrackApi.Models
         public string? SocietaSportiva { get; set; }
         public string? Immagine { get; set; }
         public string? Telefono { get; set; }
+        public int SocietaId { get; set; } // FK verso Societa
     }
 }

@@ -7,5 +7,6 @@ namespace JumpTrackApi.Models
         public int Eta { get; set; }
         public string Scuderia { get; set; }
         public string Immagine { get; set; }
+        public int SocietaId { get; set; } // FK verso Societa
     }
 }

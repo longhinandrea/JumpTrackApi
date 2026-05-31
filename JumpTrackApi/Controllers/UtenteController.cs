@@ -17,13 +17,22 @@ namespace JumpTrackApi.Controllers
         }
 
         [HttpGet]
-        public IActionResult GetAll()
+        public IActionResult GetAll([FromQuery] int? societaId = null)
         {
             var utenti = new List<Utente>();
             string connStr = _configuration.GetConnectionString("DefaultConnection");
             using var conn = new MySqlConnection(connStr);
             conn.Open();
-            using var cmd = new MySqlCommand("SELECT * FROM Utente", conn);
+            MySqlCommand cmd;
+            if (societaId.HasValue)
+            {
+                cmd = new MySqlCommand("SELECT * FROM Utente WHERE SocietaId = @SocietaId", conn);
+                cmd.Parameters.AddWithValue("@SocietaId", societaId.Value);
+            }
+            else
+            {
+                cmd = new MySqlCommand("SELECT * FROM Utente", conn);
+            }
             using var reader = cmd.ExecuteReader();
             while (reader.Read())
             {

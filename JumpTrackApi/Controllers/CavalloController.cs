@@ -19,12 +19,21 @@ namespace JumpTrackApi.Controllers
 
 
         [HttpGet]
-        public IActionResult GetCavalli()
+        public IActionResult GetCavalli([FromQuery] int? societaId = null)
         {
             var cavalli = new List<Cavallo>();
             using var conn = new MySqlConnection(_configuration.GetConnectionString("DefaultConnection"));
             conn.Open();
-            var cmd = new MySqlCommand("SELECT * FROM Cavalli", conn);
+            MySqlCommand cmd;
+            if (societaId.HasValue)
+            {
+                cmd = new MySqlCommand("SELECT * FROM Cavalli WHERE SocietaId = @SocietaId", conn);
+                cmd.Parameters.AddWithValue("@SocietaId", societaId.Value);
+            }
+            else
+            {
+                cmd = new MySqlCommand("SELECT * FROM Cavalli", conn);
+            }
             using var reader = cmd.ExecuteReader();
             while (reader.Read())
             {
@@ -34,7 +43,8 @@ namespace JumpTrackApi.Controllers
                     Nome = reader.GetString(reader.GetOrdinal("Nome")),
                     Eta = reader.GetInt32(reader.GetOrdinal("Eta")),
                     Scuderia = reader.GetString(reader.GetOrdinal("Scuderia")),
-                    Immagine = reader.IsDBNull(reader.GetOrdinal("Immagine")) ? null : reader.GetString(reader.GetOrdinal("Immagine"))
+                    Immagine = reader.IsDBNull(reader.GetOrdinal("Immagine")) ? null : reader.GetString(reader.GetOrdinal("Immagine")),
+                    SocietaId = reader.GetInt32(reader.GetOrdinal("SocietaId"))
                 });
             }
             return Ok(cavalli);

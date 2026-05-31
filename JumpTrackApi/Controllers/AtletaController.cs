@@ -37,14 +37,22 @@ namespace JumpTrackApi.Controllers
         }
 
         [HttpGet]
-        public async Task<IActionResult> GetAtleti()
+        public async Task<IActionResult> GetAtleti([FromQuery] int? societaId = null)
         {
             var connStr = _config.GetConnectionString("DefaultConnection");
             using var conn = new MySqlConnection(connStr);
             await conn.OpenAsync();
 
             var cmd = conn.CreateCommand();
-            cmd.CommandText = "SELECT Id, Cognome, Nome, Eta, SocietaSportiva, Telefono, Immagine FROM atleti";
+            if (societaId.HasValue)
+            {
+                cmd.CommandText = "SELECT Id, Cognome, Nome, Eta, SocietaSportiva, Telefono, Immagine, SocietaId FROM atleti WHERE SocietaId = @SocietaId";
+                cmd.Parameters.AddWithValue("@SocietaId", societaId.Value);
+            }
+            else
+            {
+                cmd.CommandText = "SELECT Id, Cognome, Nome, Eta, SocietaSportiva, Telefono, Immagine, SocietaId FROM atleti";
+            }
             var reader = await cmd.ExecuteReaderAsync();
 
             var lista = new List<Atleta>();
@@ -58,7 +66,8 @@ namespace JumpTrackApi.Controllers
                     Eta = reader.GetInt32(3),
                     SocietaSportiva = reader.GetString(4),
                     Telefono = reader.GetString(5),
-                    Immagine = reader.GetString(6)
+                    Immagine = reader.GetString(6),
+                    SocietaId = reader.GetInt32(7)
                 });
             }
             return Ok(lista);
